@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_RECORDS 100
+
+typedef struct {
+    int id;
+    char name[20];
+    int age;
+    float salary;
+} Employee;
+
+int main() {
+    FILE *fp;
+    Employee emp[MAX_RECORDS];
+    int i, count;
+
+    fp = fopen("data.bin", "rb");
+
+    if (fp == NULL) {
+        printf("Failed to open file\n");
+        exit(1);
+    }
+
+    count = fread(emp, sizeof(Employee), MAX_RECORDS, fp);
+
+    printf("ID\tName\tAge\tSalary\n");
+    for (i = 0; i < count; i++) {
+        printf("%d\t%s\t%d\t%.2f\n", emp[i].id, emp[i].name, emp[i].age, emp[i].salary);
+    }
+
+    fclose(fp);
+
+    return 0;
+}
