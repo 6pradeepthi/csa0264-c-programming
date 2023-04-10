@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define ALPHABET_SIZE 26
+
+int main() {
+    FILE *fp;
+    FILE *fp_out;
+    int letter_count[ALPHABET_SIZE] = {0}; // initialize letter count array with zeros
+    char ch;
+
+    // open input file
+    fp = fopen("data.txt", "r");
+    if (fp == NULL) {
+        printf("Could not open file data.txt");
+        return 1;
+    }
+
+    // read input file character by character and count occurrences of each letter
+    while ((ch = fgetc(fp)) != EOF) {
+        if (isalpha(ch)) {
+            letter_count[toupper(ch) - 'A']++;
+        }
+    }
+
+    // close input file
+    fclose(fp);
+// open output file
+    fp_out = fopen("statistics.txt", "w");
+    if (fp_out == NULL) {
+        printf("Could not create file statistics.txt");
+        return 1;
+    }
+
+    // write the letter count array to output file
+    for (int i = 0; i < ALPHABET_SIZE; i++) {
+        fprintf(fp_out, "%c: %d\n", 'A' + i, letter_count[i]);
+    }
+
+    // close output file
+    fclose(fp_out);
+
+    return 0;
+}
